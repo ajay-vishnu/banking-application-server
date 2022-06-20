@@ -1,0 +1,28 @@
+<?php
+
+$data = file_get_contents('php://input');
+$json_user = json_decode($data, true);
+$email = $json_user['email'];
+$name = $json_user['name'];
+$password = $json_user['password'];
+
+$conn = new mysqli('localhost', 'root', '9159916916', 'banking_app');
+// $sqlQuery = "SELECT name from users WHERE email='$email'";
+// $result = $conn->query($sqlQuery);
+// if ($result->num_row() < 1) {
+//     $sqlQuery = "INSERT INTO users (email, name, password) VALUES ('$email', '$name', '$password')";
+//     $execution = $conn->query($sqlQuery);
+    if ($execution === True) {
+        $sqlQuery = "SELECT user_id FROM users WHERE email='$email' AND password='$password'";
+        $reply = $conn->query($sqlQuery)->fetch_assoc();
+        $response = array('response'=>$reply['user_id']);
+    } else {
+        $response = array('response'=>'-1');
+    }
+// } else {
+//     $response = array('response'=>'-1');
+// }
+
+echo json_encode($response);
+
+?>
